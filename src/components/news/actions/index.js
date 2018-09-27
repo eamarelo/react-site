@@ -1,6 +1,8 @@
 import axios from 'axios'
 
 import actionsType from './actions-type'
+import store from '../../../store'
+import mock from '../../../mock/mock.json'
 
 /**
  * Format events
@@ -20,24 +22,16 @@ const formatEvents = events => (
   }))
 )
 
-const getEventsData = () => (
-  new Promise((resolve, reject) => {
-    const apiUrl = 'https://opendata.paris.fr/api/records/1.0/search/?dataset=evenements-a-paris&facet=placename&facet=department&facet=region&facet=city&facet=date_start&facet=date_end&facet=pricing_info&sort=date_start'
+const getLastEvents = events => ({
+  type: actionsType.GET_LAST_EVENTS,
+  data: formatEvents(events)
+})
 
-    axios.get(apiUrl).then((response) => {
-      resolve(response.records)
-    }).catch((err) => {
-      reject(err)
-    })
+export const getEventsData = () => {
+  const apiUrl = 'https://opendata.paris.fr/api/records/1.0/search/?dataset=evenements-a-paris&facet=placename&facet=department&facet=region&facet=city&facet=date_start&facet=date_end&facet=pricing_info&sort=date_start'
+  axios.get(apiUrl).then((response) => {
+    store.dispatch(getLastEvents(response.records))
+  }).catch(() => {
+    store.dispatch(getLastEvents(mock.records))
   })
-)
-
-export const getLastEvents = async () => {
-  const events = await getEventsData()
-
-  return {
-    type: actionsType.GET_LAST_EVENTS,
-    data: formatEvents(events)
-  }
 }
-

@@ -12,19 +12,6 @@ class Search extends Component {
     this.updateBind = this.update.bind(this)
   }
 
-  // update(query) {
-  //   const apiUrl = `https://opendata.paris.fr/api/records/1.0/search/?dataset=evenements-a-paris&facet=placename&facet=department&facet=region&facet=city&facet=date_start&facet=date_end&facet=pricing_info&q=${query}`
-
-  //   axios.get(apiUrl)
-  //     .then((response) => {
-  //       this.setState({
-  //         data: this.formatEvents(response.data.records)
-  //       })
-  //     })
-  //     .catch(() => {
-  //     })
-  // }
-
   update(query) {
     this.state.data = this.formatEvents(mock.records)
     this.setState({

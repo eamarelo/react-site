@@ -1,34 +1,45 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { getSearchedData, getChangeText } from '../../actions'
 
 class SearchQuery extends Component {
   constructor(props) {
     super(props)
-    this.state = { searchField: '' }
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+
+    const { dispatch } = this.props
+
+    this.dispatch = dispatch
+    this.timer = 1
   }
 
-  handleChange(event) {
-    this.setState({ searchField: event.target.value })
+  handleChange(e) {
+    e.persist()
+
+    clearTimeout(this.timer)
+
+    this.timer = setTimeout(() => {
+      this.dispatch(getChangeText(e.target.value))
+    }, 1000)
   }
 
-  handleSubmit(event) {
-    event.preventDefault()
-    const { update } = this.props
-    const { searchField } = this.state
-    update(searchField)
+  handleSubmit(e, searchField) {
+    console.log('eliesssss')
+    e.preventDefault()
+    getSearchedData(searchField)
   }
 
   render() {
-    const { searchField } = this.state
+    const { search } = this.props
+    const { searchField } = search
 
     return (
       <form>
-        <input type="text" className="orm-control mr-sm-2" name="texte" value={searchField} onChange={this.handleChange} />
-        <input type="submit" className="btn" value="Submit" onClick={this.handleSubmit} />
+        <input type="text" className="orm-control mr-sm-2" name="texte" onChange={e => this.handleChange(e)} />
+        <button type="submit" className="btn" onClick={e => this.handleSubmit(e, searchField)}>Clicl me</button>
       </form>
     )
   }
 }
 
-export default SearchQuery
+export default connect(state => state)(SearchQuery)
+

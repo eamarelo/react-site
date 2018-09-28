@@ -1,23 +1,15 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
-class Results extends Component {
-  render() {
-    const { data } = this.props
+const Results = ({ search }) => (
+  <ul className="list-group">
+    { search.data.map(item => (
+      <li key={item.id} className="list-group-item">
+        <Link className="nav-link posts" to={`/details/${item.id}`}>{`${item.title}`}</Link>
+      </li>
+    ))}
+  </ul>
+)
 
-    return (
-      <ul className="list-group">
-        { data.map(item => (
-          <li
-            key={item.id}
-            className="list-group-item"
-          >
-            <Link className="nav-link posts" to={`/details/${item.id}`}>{`${item.title}`}</Link>
-          </li>
-        ))}
-      </ul>
-    )
-  }
-}
-
-export default Results
+export default connect(state => state)(Results)

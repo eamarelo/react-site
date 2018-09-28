@@ -1,0 +1,4 @@
+export default {
+  SEARCH_EVENTS: 'SEARCH_EVENTS',
+  CHANGE_TEXT: 'CHANGE_TEXT'
+}
